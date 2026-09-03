@@ -1,372 +1,1130 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blossom Oktav</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
+<title>For Disa 💙</title>
 
-        body {
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+<style>
+/* =========================
+   DASAR
+========================= */
 
-            background:
-                radial-gradient(circle at top left, #ffd6e8, transparent 35%),
-                radial-gradient(circle at bottom right, #ff9fc5, transparent 40%),
-                linear-gradient(135deg, #ffb6d5, #f78fb3, #e978a3);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-            position: relative;
-        }
+body {
+    min-height: 100vh;
+    overflow: hidden;
 
-        /* Cahaya lembut */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.18);
-            border-radius: 50%;
-            filter: blur(80px);
-            top: -180px;
-            left: -150px;
-        }
+    font-family: "Segoe UI", sans-serif;
 
-        /* LOGIN CARD */
-        .login-box {
-            position: relative;
-            z-index: 10;
-            width: 380px;
-            padding: 45px 38px;
+    background:
+        radial-gradient(
+            circle at 20% 15%,
+            rgba(90, 190, 255, .35),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 85%,
+            rgba(30, 100, 220, .35),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #06162f,
+            #0b3264,
+            #07172f
+        );
 
-            background: rgba(255, 255, 255, 0.18);
-            border: 1px solid rgba(255, 255, 255, 0.45);
-            border-radius: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+    color: #eaf7ff;
+}
 
-            box-shadow:
-                0 25px 60px rgba(130, 30, 70, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
-            animation: appear 1s ease;
-        }
+/* =========================
+   BACKGROUND GLOW
+========================= */
 
-        @keyframes appear {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(.95);
-            }
+.glow {
+    position: fixed;
 
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
+    width: 450px;
+    height: 450px;
 
-        .logo {
-            text-align: center;
-            font-size: 55px;
-            margin-bottom: 5px;
-            filter: drop-shadow(0 5px 8px rgba(160, 40, 90, .25));
-        }
+    border-radius: 50%;
 
-        h1 {
-            text-align: center;
-            color: white;
-            font-size: 30px;
-            letter-spacing: 1px;
-            text-shadow: 0 3px 10px rgba(120, 30, 70, .3);
-        }
+    background: rgba(80, 190, 255, .18);
 
-        .subtitle {
-            text-align: center;
-            color: #fff5fa;
-            margin-top: 7px;
-            margin-bottom: 30px;
-            font-size: 13px;
-        }
+    filter: blur(90px);
 
-        /* INPUT */
-        .input-group {
-            margin-bottom: 18px;
-        }
+    animation:
+        glowMove 7s ease-in-out infinite alternate;
 
-        .input-group label {
-            display: block;
-            color: white;
-            font-size: 13px;
-            margin-bottom: 7px;
-            padding-left: 5px;
-        }
+    pointer-events: none;
+}
 
-        .input-group input {
-            width: 100%;
-            padding: 14px 17px;
+@keyframes glowMove {
 
-            border: 1px solid rgba(255, 255, 255, .45);
-            outline: none;
-            border-radius: 14px;
+    from {
+        transform:
+            scale(.8)
+            translate(-80px, -40px);
 
-            background: rgba(255, 255, 255, .22);
-            color: white;
+        opacity: .5;
+    }
 
-            font-size: 14px;
+    to {
+        transform:
+            scale(1.25)
+            translate(80px, 40px);
 
-            transition: .3s;
-        }
+        opacity: .9;
+    }
+}
 
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, .75);
-        }
 
-        .input-group input:focus {
-            background: rgba(255, 255, 255, .32);
-            border-color: white;
-            box-shadow: 0 0 15px rgba(255, 255, 255, .25);
-        }
+/* =========================
+   CARD
+========================= */
 
-        /* BUTTON */
-        .login-btn {
-            width: 100%;
-            border: none;
-            padding: 14px;
+.card {
+    position: relative;
 
-            border-radius: 14px;
+    width: min(90%, 500px);
 
-            background: linear-gradient(
-                135deg,
-                #ffffff,
-                #ffe4ef
-            );
+    padding: 55px 35px;
 
-            color: #d94d82;
-            font-size: 15px;
-            font-weight: bold;
+    text-align: center;
 
-            cursor: pointer;
-            transition: .3s;
+    background:
+        rgba(255, 255, 255, .10);
 
-            box-shadow: 0 8px 20px rgba(130, 30, 70, .18);
-        }
+    border:
+        1px solid rgba(255, 255, 255, .25);
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(130, 30, 70, .25);
-        }
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
 
-        .login-btn:active {
-            transform: scale(.98);
-        }
+    border-radius: 35px;
 
-        .forgot {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .35),
+        inset 0 1px rgba(255, 255, 255, .35);
 
-            color: white;
-            font-size: 12px;
-            text-decoration: none;
-        }
+    z-index: 10;
 
-        .forgot:hover {
-            text-decoration: underline;
-        }
+    animation: cardIn 1.2s ease;
+}
 
-        /* SAKURA PARTICLES */
-        .sakura {
-            position: absolute;
-            top: -50px;
+@keyframes cardIn {
 
-            width: 14px;
-            height: 14px;
+    from {
+        opacity: 0;
+        transform:
+            translateY(30px)
+            scale(.94);
+    }
 
-            background: #ffd1e1;
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
 
-            border-radius: 100% 0 100% 0;
 
-            opacity: .9;
+/* =========================
+   HEART
+========================= */
 
-            filter: drop-shadow(
-                0 2px 4px rgba(120, 30, 70, .15)
-            );
+.heart-box {
+    position: relative;
 
-            animation:
-                fall linear infinite,
-                sway ease-in-out infinite alternate;
-        }
+    width: 115px;
+    height: 115px;
 
-        @keyframes fall {
-            from {
-                transform: translateY(-60px) rotate(0deg);
-            }
+    margin: 0 auto 30px;
+}
 
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
-        }
+.heart {
+    position: absolute;
 
-        @keyframes sway {
-            from {
-                margin-left: -45px;
-            }
+    width: 72px;
+    height: 72px;
 
-            to {
-                margin-left: 45px;
-            }
-        }
+    left: 21px;
+    top: 20px;
 
-        /* Beberapa variasi bunga */
-        .sakura:nth-child(1) {
-            left: 5%;
-            animation-duration: 9s, 2.5s;
-            animation-delay: 0s;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #9ee8ff,
+            #35a9ff 45%,
+            #1768e5
+        );
 
-        .sakura:nth-child(2) {
-            left: 15%;
-            animation-duration: 12s, 3s;
-            animation-delay: 2s;
-            width: 10px;
-            height: 10px;
-        }
+    transform: rotate(-45deg);
 
-        .sakura:nth-child(3) {
-            left: 27%;
-            animation-duration: 8s, 2s;
-            animation-delay: 1s;
-        }
+    box-shadow:
+        0 0 20px rgba(75, 190, 255, .8),
+        0 0 50px rgba(40, 130, 255, .45);
 
-        .sakura:nth-child(4) {
-            left: 40%;
-            animation-duration: 13s, 3s;
-            animation-delay: 4s;
-            width: 11px;
-            height: 11px;
-        }
+    animation:
+        heartbeat 1.6s ease-in-out infinite;
+}
 
-        .sakura:nth-child(5) {
-            left: 52%;
-            animation-duration: 10s, 2.5s;
-            animation-delay: 0s;
-        }
+.heart::before,
+.heart::after {
+    content: "";
 
-        .sakura:nth-child(6) {
-            left: 64%;
-            animation-duration: 14s, 3s;
-            animation-delay: 3s;
-            width: 9px;
-            height: 9px;
-        }
+    position: absolute;
 
-        .sakura:nth-child(7) {
-            left: 75%;
-            animation-duration: 9s, 2s;
-            animation-delay: 1s;
-        }
+    width: 72px;
+    height: 72px;
 
-        .sakura:nth-child(8) {
-            left: 88%;
-            animation-duration: 12s, 3s;
-            animation-delay: 5s;
-            width: 12px;
-            height: 12px;
-        }
+    border-radius: 50%;
 
-        .sakura:nth-child(9) {
-            left: 95%;
-            animation-duration: 10s, 2.5s;
-            animation-delay: 2s;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #9ee8ff,
+            #35a9ff 45%,
+            #1768e5
+        );
+}
 
-        .sakura:nth-child(10) {
-            left: 33%;
-            animation-duration: 15s, 3s;
-            animation-delay: 6s;
-            width: 8px;
-            height: 8px;
-        }
+.heart::before {
+    top: -36px;
+    left: 0;
+}
 
-        /* RESPONSIVE */
-        @media (max-width: 500px) {
-            .login-box {
-                width: calc(100% - 35px);
-                padding: 38px 25px;
-            }
+.heart::after {
+    left: 36px;
+    top: 0;
+}
 
-            h1 {
-                font-size: 27px;
-            }
-        }
-    </style>
+@keyframes heartbeat {
+
+    0%, 100% {
+        transform:
+            rotate(-45deg)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            rotate(-45deg)
+            scale(1.12);
+    }
+}
+
+
+/* Kilau pada hati */
+
+.heart-box::after {
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 9px;
+
+    background:
+        rgba(255, 255, 255, .75);
+
+    border-radius: 50%;
+
+    transform: rotate(-35deg);
+
+    top: 18px;
+    left: 45px;
+
+    filter: blur(1px);
+
+    z-index: 3;
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+h1 {
+    font-size: 42px;
+
+    letter-spacing: 3px;
+
+    color: #dff8ff;
+
+    text-shadow:
+        0 0 15px rgba(90, 200, 255, .7),
+        0 4px 20px rgba(0, 0, 0, .3);
+
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    color: #bfe7ff;
+}
+
+.line {
+    width: 90px;
+    height: 3px;
+
+    margin: 24px auto;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #74d9ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px #4fc8ff;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    margin-top: 25px;
+
+    padding: 14px 32px;
+
+    border:
+        1px solid rgba(255, 255, 255, .3);
+
+    border-radius: 50px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(120, 220, 255, .35),
+            rgba(30, 110, 230, .35)
+        );
+
+    color: #e8faff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 8px 25px rgba(0, 80, 180, .25),
+        inset 0 1px rgba(255, 255, 255, .35);
+
+    transition: .3s;
+}
+
+button:hover {
+    transform:
+        translateY(-4px)
+        scale(1.05);
+
+    box-shadow:
+        0 12px 35px rgba(40, 160, 255, .4),
+        0 0 20px rgba(70, 190, 255, .3);
+}
+
+button:active {
+    transform: scale(.95);
+}
+
+
+/* =========================
+   HUJAN
+========================= */
+
+.rain {
+    position: fixed;
+
+    top: -40px;
+
+    width: 2px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(190, 240, 255, .95),
+            rgba(80, 190, 255, .25)
+        );
+
+    box-shadow:
+        0 0 7px rgba(100, 210, 255, .7),
+        0 0 14px rgba(50, 150, 255, .35);
+
+    animation:
+        rainFall linear forwards;
+}
+
+@keyframes rainFall {
+
+    0% {
+        transform:
+            translateY(-100px)
+            translateX(0)
+            rotate(8deg);
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: .9;
+    }
+
+    100% {
+        transform:
+            translateY(115vh)
+            translateX(-80px)
+            rotate(8deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   TITIK AIR GLOSSY
+========================= */
+
+.drop {
+    position: fixed;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(200, 245, 255, .9);
+
+    box-shadow:
+        0 0 8px #75dcff,
+        0 0 18px rgba(80, 180, 255, .7);
+
+    animation:
+        dropFall linear forwards;
+
+    pointer-events: none;
+
+    z-index: 3;
+}
+
+@keyframes dropFall {
+
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: .9;
+    }
+
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   FLOATING HEART
+========================= */
+
+.float-heart {
+    position: fixed;
+
+    bottom: -30px;
+
+    color: #8cddff;
+
+    font-size: 20px;
+
+    pointer-events: none;
+
+    text-shadow:
+        0 0 10px #45caff,
+        0 0 20px rgba(50, 160, 255, .7);
+
+    animation:
+        floatUp linear forwards;
+}
+
+@keyframes floatUp {
+
+    0% {
+        transform:
+            translateY(0)
+            scale(.6);
+
+        opacity: 0;
+    }
+
+    20% {
+        opacity: .8;
+    }
+
+    100% {
+        transform:
+            translateY(-110vh)
+            translateX(80px)
+            scale(1.25);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   HADIAH
+========================= */
+
+.gift {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background:
+        rgba(2, 15, 40, .68);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .5s;
+
+    z-index: 100;
+}
+
+.gift.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Kotak */
+
+.gift-box {
+    position: absolute;
+
+    width: 150px;
+    height: 130px;
+
+    transform:
+        translateY(20px)
+        scale(.7);
+
+    transition: .7s;
+
+    filter:
+        drop-shadow(
+            0 0 25px
+            rgba(70, 190, 255, .7)
+        );
+}
+
+.gift.show .gift-box {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* Badan kotak */
+
+.gift-body {
+    position: absolute;
+
+    width: 150px;
+    height: 105px;
+
+    bottom: 0;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #164f9c,
+            #218bd0,
+            #0b397c
+        );
+
+    border:
+        1px solid rgba(180, 240, 255, .5);
+}
+
+
+/* Tutup kotak */
+
+.gift-lid {
+    position: absolute;
+
+    width: 165px;
+    height: 35px;
+
+    left: -7px;
+    top: -15px;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #318fd2,
+            #70d8ff,
+            #1761a8
+        );
+
+    z-index: 3;
+
+    box-shadow:
+        inset 0 1px rgba(255, 255, 255, .6);
+}
+
+
+/* Pita */
+
+.gift-ribbon {
+    position: absolute;
+
+    width: 22px;
+    height: 130px;
+
+    left: 64px;
+    top: -15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #a9edff,
+            #52caff,
+            #a9edff
+        );
+
+    z-index: 4;
+
+    box-shadow:
+        0 0 12px rgba(90, 210, 255, .7);
+}
+
+
+/* Glow hadiah */
+
+.gift-glow {
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(80, 200, 255, .35);
+
+    filter: blur(50px);
+
+    animation:
+        giftGlow 2s infinite alternate;
+}
+
+@keyframes giftGlow {
+
+    from {
+        transform: scale(.8);
+        opacity: .5;
+    }
+
+    to {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+}
+
+
+/* =========================
+   PESAN HADIAH
+========================= */
+
+.gift-message {
+    position: relative;
+
+    width: min(88%, 390px);
+
+    padding: 38px 25px;
+
+    text-align: center;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(120, 210, 255, .20),
+            rgba(20, 80, 160, .25)
+        );
+
+    border:
+        1px solid rgba(190, 240, 255, .35);
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, .45),
+        inset 0 1px rgba(255, 255, 255, .4);
+
+    transform: scale(.5);
+
+    opacity: 0;
+
+    transition: .7s;
+
+    z-index: 10;
+}
+
+.gift.show .gift-message {
+    transform: scale(1);
+    opacity: 1;
+
+    transition-delay: .35s;
+}
+
+.gift-message h2 {
+    margin: 10px 0;
+
+    font-size: 30px;
+
+    color: #dff8ff;
+
+    text-shadow:
+        0 0 15px rgba(90, 210, 255, .8);
+}
+
+.gift-message p {
+    color: #c8edff;
+
+    line-height: 1.8;
+
+    font-size: 14px;
+}
+
+.sparkles {
+    font-size: 20px;
+
+    color: #9deaff;
+
+    animation:
+        sparkle 1.5s infinite alternate;
+}
+
+@keyframes sparkle {
+
+    from {
+        opacity: .4;
+        transform: scale(.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
+
+.big-heart {
+    font-size: 45px;
+
+    margin: 18px;
+
+    filter:
+        drop-shadow(0 0 15px #42caff);
+
+    animation:
+        giftHeart 1.3s infinite;
+}
+
+@keyframes giftHeart {
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.close-gift {
+    margin-top: 5px;
+
+    padding: 10px 24px;
+}
+
+
+/* =========================
+   SPARKLE HADIAH
+========================= */
+
+.gift-sparkle {
+    position: fixed;
+
+    color: #9deaff;
+
+    pointer-events: none;
+
+    z-index: 200;
+
+    text-shadow:
+        0 0 12px #45caff;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+    .card {
+        padding: 45px 25px;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .heart-box {
+        transform: scale(.9);
+    }
+}
+</style>
 </head>
+
 
 <body>
 
-    <!-- Sakura -->
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
-    <div class="sakura"></div>
+<!-- Background glow -->
+<div class="glow"></div>
 
-    <!-- Login -->
-    <div class="login-box">
 
-        <div class="logo">🌸</div>
+<!-- =========================
+     HALAMAN UTAMA
+========================= -->
 
-        <h1>Blossom Oktav</h1>
+<div class="card">
 
-        <p class="subtitle">
-            Welcome back to your little garden
-        </p>
+    <div class="heart-box">
+        <div class="heart"></div>
+    </div>
 
-        <form>
+    <h1>For Disa 💙</h1>
 
-            <div class="input-group">
-                <label>Username</label>
-                <input
-                    type="text"
-                    placeholder="Enter your username"
-                    autocomplete="username"
-                >
-            </div>
+    <div class="line"></div>
 
-            <div class="input-group">
-                <label>Password</label>
-                <input
-                    type="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                >
-            </div>
+    <p class="subtitle">
+        Some moments feel like rain...<br>
+        quiet, beautiful, and worth remembering ☁️
+    </p>
 
-            <button class="login-btn" type="submit">
-                Login 🌸
-            </button>
+    <button onclick="openGift()">
+        ✦ Tap gently
+    </button>
 
-            <a href="#" class="forgot">
-                Forgot your password?
-            </a>
+</div>
 
-        </form>
+
+<!-- =========================
+     HADIAH
+========================= -->
+
+<div class="gift" id="gift">
+
+    <div class="gift-glow"></div>
+
+    <div class="gift-box">
+
+        <div class="gift-lid"></div>
+
+        <div class="gift-body"></div>
+
+        <div class="gift-ribbon"></div>
 
     </div>
 
+
+    <div class="gift-message">
+
+        <div class="sparkles">
+            ✦ ✧ ✦
+        </div>
+
+        <h2>
+            For Disa 💙
+        </h2>
+
+        <p>
+            A little gift,<br>
+            just to make this moment brighter ✨
+        </p>
+
+        <div class="big-heart">
+            💙
+        </div>
+
+        <button
+            class="close-gift"
+            onclick="closeGift()">
+
+            Close ♡
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   HUJAN
+========================= */
+
+function createRain() {
+
+    const rain =
+        document.createElement("div");
+
+    rain.className = "rain";
+
+    rain.style.left =
+        Math.random() * 100 + "vw";
+
+    rain.style.height =
+        (50 + Math.random() * 70) + "px";
+
+    rain.style.animationDuration =
+        (.7 + Math.random() * 1.1) + "s";
+
+    document.body.appendChild(rain);
+
+    setTimeout(() => {
+
+        rain.remove();
+
+    }, 2500);
+}
+
+setInterval(createRain, 70);
+
+
+/* =========================
+   TITIK AIR
+========================= */
+
+function createDrop() {
+
+    const drop =
+        document.createElement("div");
+
+    drop.className = "drop";
+
+    drop.style.left =
+        Math.random() * 100 + "vw";
+
+    drop.style.animationDuration =
+        (2 + Math.random() * 3) + "s";
+
+    document.body.appendChild(drop);
+
+    setTimeout(() => {
+
+        drop.remove();
+
+    }, 6000);
+}
+
+setInterval(createDrop, 500);
+
+
+/* =========================
+   FLOATING HEART
+========================= */
+
+function createHeart() {
+
+    const heart =
+        document.createElement("div");
+
+    heart.className =
+        "float-heart";
+
+    heart.innerHTML =
+        ["♡", "♥", "💙", "✦"][
+            Math.floor(Math.random() * 4)
+        ];
+
+    heart.style.left =
+        Math.random() * 100 + "vw";
+
+    heart.style.animationDuration =
+        (5 + Math.random() * 4) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    }, 10000);
+}
+
+setInterval(createHeart, 1000);
+
+
+/* =========================
+   BUKA HADIAH
+========================= */
+
+function openGift() {
+
+    const gift =
+        document.getElementById("gift");
+
+    gift.classList.add("show");
+
+    createGiftSparkles();
+}
+
+
+/* =========================
+   TUTUP HADIAH
+========================= */
+
+function closeGift() {
+
+    const gift =
+        document.getElementById("gift");
+
+    gift.classList.remove("show");
+}
+
+
+/* =========================
+   SPARKLE HADIAH
+========================= */
+
+function createGiftSparkles() {
+
+    for (let i = 0; i < 25; i++) {
+
+        const sparkle =
+            document.createElement("div");
+
+        sparkle.className =
+            "gift-sparkle";
+
+        sparkle.innerHTML =
+            ["✦", "✧", "•", "💙"][
+                Math.floor(Math.random() * 4)
+            ];
+
+        sparkle.style.left =
+            (30 + Math.random() * 40) + "vw";
+
+        sparkle.style.top =
+            (30 + Math.random() * 40) + "vh";
+
+        sparkle.style.fontSize =
+            (12 + Math.random() * 18) + "px";
+
+        const x =
+            Math.random() * 300 - 150;
+
+        const y =
+            Math.random() * 300 - 150;
+
+        sparkle.animate(
+            [
+                {
+                    transform:
+                        "scale(0)",
+                    opacity: 0
+                },
+
+                {
+                    transform:
+                        `translate(${x}px, ${y}px)
+                         scale(1.4)`,
+
+                    opacity: 1
+                },
+
+                {
+                    transform:
+                        `translate(${x * 1.5}px,
+                                   ${y * 1.5}px)
+                         scale(0)`,
+
+                    opacity: 0
+                }
+            ],
+            {
+                duration:
+                    1400 + Math.random() * 700,
+
+                easing: "ease-out"
+            }
+        );
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => {
+
+            sparkle.remove();
+
+        }, 2200);
+    }
+}
+
+</script>
+
 </body>
-  </html>
+</html>
