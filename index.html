@@ -2,1127 +2,3580 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>For Disa 💙</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Neon Forest Knight</title>
 
 <style>
-/* =========================
-   DASAR
-========================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    touch-action:none;
 }
 
-body {
-    min-height: 100vh;
-    overflow: hidden;
-
-    font-family: "Segoe UI", sans-serif;
-
-    background:
-        radial-gradient(
-            circle at 20% 15%,
-            rgba(90, 190, 255, .35),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 80% 85%,
-            rgba(30, 100, 220, .35),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #06162f,
-            #0b3264,
-            #07172f
-        );
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: #eaf7ff;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#071116;
+    font-family:monospace;
 }
 
-
-/* =========================
-   BACKGROUND GLOW
-========================= */
-
-.glow {
-    position: fixed;
-
-    width: 450px;
-    height: 450px;
-
-    border-radius: 50%;
-
-    background: rgba(80, 190, 255, .18);
-
-    filter: blur(90px);
-
-    animation:
-        glowMove 7s ease-in-out infinite alternate;
-
-    pointer-events: none;
+canvas{
+    width:100vw;
+    height:100vh;
+    display:block;
+    image-rendering:pixelated;
 }
 
-@keyframes glowMove {
-
-    from {
-        transform:
-            scale(.8)
-            translate(-80px, -40px);
-
-        opacity: .5;
-    }
-
-    to {
-        transform:
-            scale(1.25)
-            translate(80px, 40px);
-
-        opacity: .9;
-    }
+#ui{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
 }
 
+.panel{
+    background:rgba(4,10,16,.72);
+    border:2px solid rgba(107,210,230,.3);
+    box-shadow:0 0 18px rgba(0,220,255,.12);
+    border-radius:8px;
+}
 
-/* =========================
-   CARD
-========================= */
+#playerUI{
+    position:absolute;
+    top:15px;
+    left:15px;
+    width:min(300px,50vw);
+    padding:10px;
+}
 
-.card {
-    position: relative;
+.statTitle{
+    color:#f3d278;
+    font-size:14px;
+    margin-bottom:7px;
+}
 
-    width: min(90%, 500px);
+.smallText{
+    font-size:10px;
+    color:#b7d1d4;
+    margin-top:5px;
+}
 
-    padding: 55px 35px;
+.bar{
+    height:14px;
+    background:#10171d;
+    border:2px solid #071014;
+    margin-top:3px;
+    overflow:hidden;
+}
 
-    text-align: center;
+.fill{
+    height:100%;
+}
 
-    background:
-        rgba(255, 255, 255, .10);
+#hpFill{
+    width:100%;
+    background:linear-gradient(90deg,#9d2338,#ff5b6b);
+}
 
-    border:
-        1px solid rgba(255, 255, 255, .25);
+#manaFill{
+    width:100%;
+    background:linear-gradient(90deg,#1262a8,#50cfff);
+}
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+#ultimateFill{
+    width:0%;
+    background:linear-gradient(90deg,#b31cff,#ff4dd8,#fff);
+}
 
-    border-radius: 35px;
+#bossUI{
+    position:absolute;
+    top:105px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(480px,70vw);
+    padding:8px;
+    display:none;
+}
+
+#bossName{
+    text-align:center;
+    color:#ff91dd;
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+#bossFill{
+    width:100%;
+    background:linear-gradient(90deg,#5c1877,#e935b9);
+}
+
+#message{
+    position:absolute;
+    top:42%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:white;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    text-shadow:0 0 18px #55dfff;
+    opacity:0;
+    transition:.4s;
+}
+
+/* JOYSTICK */
+
+#joystick{
+    pointer-events:auto;
+    position:absolute;
+    left:28px;
+    bottom:30px;
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    border:3px solid rgba(170,255,255,.35);
+    background:radial-gradient(
+        circle,
+        rgba(80,170,180,.25),
+        rgba(0,0,0,.4)
+    );
+}
+
+#stick{
+    position:absolute;
+    width:60px;
+    height:60px;
+    left:37px;
+    top:37px;
+    border-radius:50%;
+    background:radial-gradient(
+        circle,
+        #bfffff,
+        #25789e
+    );
+    border:3px solid white;
+}
+
+/* ACTION */
+
+#actionControls{
+    position:absolute;
+    right:20px;
+    bottom:20px;
+    width:240px;
+    height:220px;
+    pointer-events:none;
+}
+
+.action{
+    pointer-events:auto;
+    position:absolute;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:white;
+    font-family:monospace;
+    font-weight:bold;
+
+    border:3px solid rgba(255,255,255,.3);
 
     box-shadow:
-        0 30px 80px rgba(0, 0, 0, .35),
-        inset 0 1px rgba(255, 255, 255, .35);
-
-    z-index: 10;
-
-    animation: cardIn 1.2s ease;
+        inset 0 -8px rgba(0,0,0,.3),
+        0 0 15px rgba(0,0,0,.5);
 }
 
-@keyframes cardIn {
+.action:active{
+    transform:scale(.9);
+}
 
-    from {
-        opacity: 0;
-        transform:
-            translateY(30px)
-            scale(.94);
+#ultimate{
+    width:88px;
+    height:88px;
+    left:0;
+    bottom:35px;
+
+    background:radial-gradient(
+        circle,
+        #ff78e9,
+        #941cff 48%,
+        #2a0849
+    );
+}
+
+#jump{
+    width:76px;
+    height:76px;
+    right:15px;
+    bottom:115px;
+
+    font-size:28px;
+
+    background:radial-gradient(
+        circle,
+        #63c5ff,
+        #28569b
+    );
+}
+
+#attack{
+    width:100px;
+    height:100px;
+    right:0;
+    bottom:0;
+
+    font-size:36px;
+
+    background:radial-gradient(
+        circle,
+        #e45a6a,
+        #7b2636
+    );
+}
+
+#ultimate.ready{
+    animation:pulse 1s infinite alternate;
+}
+
+@keyframes pulse{
+    from{
+        box-shadow:0 0 15px #ff29db;
     }
 
-    to {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-/* =========================
-   HEART
-========================= */
-
-.heart-box {
-    position: relative;
-
-    width: 115px;
-    height: 115px;
-
-    margin: 0 auto 30px;
-}
-
-.heart {
-    position: absolute;
-
-    width: 72px;
-    height: 72px;
-
-    left: 21px;
-    top: 20px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #9ee8ff,
-            #35a9ff 45%,
-            #1768e5
-        );
-
-    transform: rotate(-45deg);
-
-    box-shadow:
-        0 0 20px rgba(75, 190, 255, .8),
-        0 0 50px rgba(40, 130, 255, .45);
-
-    animation:
-        heartbeat 1.6s ease-in-out infinite;
-}
-
-.heart::before,
-.heart::after {
-    content: "";
-
-    position: absolute;
-
-    width: 72px;
-    height: 72px;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #9ee8ff,
-            #35a9ff 45%,
-            #1768e5
-        );
-}
-
-.heart::before {
-    top: -36px;
-    left: 0;
-}
-
-.heart::after {
-    left: 36px;
-    top: 0;
-}
-
-@keyframes heartbeat {
-
-    0%, 100% {
-        transform:
-            rotate(-45deg)
-            scale(1);
-    }
-
-    50% {
-        transform:
-            rotate(-45deg)
-            scale(1.12);
+    to{
+        box-shadow:
+            0 0 35px #fff,
+            0 0 70px #d51cff;
     }
 }
 
+@media(max-width:650px){
 
-/* Kilau pada hati */
-
-.heart-box::after {
-    content: "";
-
-    position: absolute;
-
-    width: 20px;
-    height: 9px;
-
-    background:
-        rgba(255, 255, 255, .75);
-
-    border-radius: 50%;
-
-    transform: rotate(-35deg);
-
-    top: 18px;
-    left: 45px;
-
-    filter: blur(1px);
-
-    z-index: 3;
-}
-
-
-/* =========================
-   TEXT
-========================= */
-
-h1 {
-    font-size: 42px;
-
-    letter-spacing: 3px;
-
-    color: #dff8ff;
-
-    text-shadow:
-        0 0 15px rgba(90, 200, 255, .7),
-        0 4px 20px rgba(0, 0, 0, .3);
-
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-size: 16px;
-
-    line-height: 1.8;
-
-    color: #bfe7ff;
-}
-
-.line {
-    width: 90px;
-    height: 3px;
-
-    margin: 24px auto;
-
-    border-radius: 20px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #74d9ff,
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px #4fc8ff;
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-button {
-    margin-top: 25px;
-
-    padding: 14px 32px;
-
-    border:
-        1px solid rgba(255, 255, 255, .3);
-
-    border-radius: 50px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(120, 220, 255, .35),
-            rgba(30, 110, 230, .35)
-        );
-
-    color: #e8faff;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    backdrop-filter: blur(10px);
-
-    box-shadow:
-        0 8px 25px rgba(0, 80, 180, .25),
-        inset 0 1px rgba(255, 255, 255, .35);
-
-    transition: .3s;
-}
-
-button:hover {
-    transform:
-        translateY(-4px)
-        scale(1.05);
-
-    box-shadow:
-        0 12px 35px rgba(40, 160, 255, .4),
-        0 0 20px rgba(70, 190, 255, .3);
-}
-
-button:active {
-    transform: scale(.95);
-}
-
-
-/* =========================
-   HUJAN
-========================= */
-
-.rain {
-    position: fixed;
-
-    top: -40px;
-
-    width: 2px;
-    height: 90px;
-
-    border-radius: 50%;
-
-    pointer-events: none;
-
-    z-index: 2;
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(190, 240, 255, .95),
-            rgba(80, 190, 255, .25)
-        );
-
-    box-shadow:
-        0 0 7px rgba(100, 210, 255, .7),
-        0 0 14px rgba(50, 150, 255, .35);
-
-    animation:
-        rainFall linear forwards;
-}
-
-@keyframes rainFall {
-
-    0% {
-        transform:
-            translateY(-100px)
-            translateX(0)
-            rotate(8deg);
-
-        opacity: 0;
+    #joystick{
+        width:125px;
+        height:125px;
+        left:18px;
+        bottom:20px;
     }
 
-    10% {
-        opacity: .9;
+    #stick{
+        width:55px;
+        height:55px;
+        left:32px;
+        top:32px;
     }
 
-    100% {
-        transform:
-            translateY(115vh)
-            translateX(-80px)
-            rotate(8deg);
-
-        opacity: 0;
-    }
-}
-
-
-/* =========================
-   TITIK AIR GLOSSY
-========================= */
-
-.drop {
-    position: fixed;
-
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(200, 245, 255, .9);
-
-    box-shadow:
-        0 0 8px #75dcff,
-        0 0 18px rgba(80, 180, 255, .7);
-
-    animation:
-        dropFall linear forwards;
-
-    pointer-events: none;
-
-    z-index: 3;
-}
-
-@keyframes dropFall {
-
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
+    #actionControls{
+        right:5px;
+        bottom:5px;
+        transform:scale(.85);
+        transform-origin:bottom right;
     }
 
-    15% {
-        opacity: .9;
-    }
-
-    to {
-        transform: translateY(110vh);
-        opacity: 0;
-    }
-}
-
-
-/* =========================
-   FLOATING HEART
-========================= */
-
-.float-heart {
-    position: fixed;
-
-    bottom: -30px;
-
-    color: #8cddff;
-
-    font-size: 20px;
-
-    pointer-events: none;
-
-    text-shadow:
-        0 0 10px #45caff,
-        0 0 20px rgba(50, 160, 255, .7);
-
-    animation:
-        floatUp linear forwards;
-}
-
-@keyframes floatUp {
-
-    0% {
-        transform:
-            translateY(0)
-            scale(.6);
-
-        opacity: 0;
-    }
-
-    20% {
-        opacity: .8;
-    }
-
-    100% {
-        transform:
-            translateY(-110vh)
-            translateX(80px)
-            scale(1.25);
-
-        opacity: 0;
-    }
-}
-
-
-/* =========================
-   HADIAH
-========================= */
-
-.gift {
-    position: fixed;
-
-    inset: 0;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    background:
-        rgba(2, 15, 40, .68);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition: .5s;
-
-    z-index: 100;
-}
-
-.gift.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-
-/* Kotak */
-
-.gift-box {
-    position: absolute;
-
-    width: 150px;
-    height: 130px;
-
-    transform:
-        translateY(20px)
-        scale(.7);
-
-    transition: .7s;
-
-    filter:
-        drop-shadow(
-            0 0 25px
-            rgba(70, 190, 255, .7)
-        );
-}
-
-.gift.show .gift-box {
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-
-/* Badan kotak */
-
-.gift-body {
-    position: absolute;
-
-    width: 150px;
-    height: 105px;
-
-    bottom: 0;
-
-    border-radius: 8px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #164f9c,
-            #218bd0,
-            #0b397c
-        );
-
-    border:
-        1px solid rgba(180, 240, 255, .5);
-}
-
-
-/* Tutup kotak */
-
-.gift-lid {
-    position: absolute;
-
-    width: 165px;
-    height: 35px;
-
-    left: -7px;
-    top: -15px;
-
-    border-radius: 8px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #318fd2,
-            #70d8ff,
-            #1761a8
-        );
-
-    z-index: 3;
-
-    box-shadow:
-        inset 0 1px rgba(255, 255, 255, .6);
-}
-
-
-/* Pita */
-
-.gift-ribbon {
-    position: absolute;
-
-    width: 22px;
-    height: 130px;
-
-    left: 64px;
-    top: -15px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #a9edff,
-            #52caff,
-            #a9edff
-        );
-
-    z-index: 4;
-
-    box-shadow:
-        0 0 12px rgba(90, 210, 255, .7);
-}
-
-
-/* Glow hadiah */
-
-.gift-glow {
-    position: absolute;
-
-    width: 200px;
-    height: 200px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(80, 200, 255, .35);
-
-    filter: blur(50px);
-
-    animation:
-        giftGlow 2s infinite alternate;
-}
-
-@keyframes giftGlow {
-
-    from {
-        transform: scale(.8);
-        opacity: .5;
-    }
-
-    to {
-        transform: scale(1.3);
-        opacity: 1;
-    }
-}
-
-
-/* =========================
-   PESAN HADIAH
-========================= */
-
-.gift-message {
-    position: relative;
-
-    width: min(88%, 390px);
-
-    padding: 38px 25px;
-
-    text-align: center;
-
-    border-radius: 30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(120, 210, 255, .20),
-            rgba(20, 80, 160, .25)
-        );
-
-    border:
-        1px solid rgba(190, 240, 255, .35);
-
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-
-    box-shadow:
-        0 25px 70px rgba(0, 0, 0, .45),
-        inset 0 1px rgba(255, 255, 255, .4);
-
-    transform: scale(.5);
-
-    opacity: 0;
-
-    transition: .7s;
-
-    z-index: 10;
-}
-
-.gift.show .gift-message {
-    transform: scale(1);
-    opacity: 1;
-
-    transition-delay: .35s;
-}
-
-.gift-message h2 {
-    margin: 10px 0;
-
-    font-size: 30px;
-
-    color: #dff8ff;
-
-    text-shadow:
-        0 0 15px rgba(90, 210, 255, .8);
-}
-
-.gift-message p {
-    color: #c8edff;
-
-    line-height: 1.8;
-
-    font-size: 14px;
-}
-
-.sparkles {
-    font-size: 20px;
-
-    color: #9deaff;
-
-    animation:
-        sparkle 1.5s infinite alternate;
-}
-
-@keyframes sparkle {
-
-    from {
-        opacity: .4;
-        transform: scale(.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-}
-
-.big-heart {
-    font-size: 45px;
-
-    margin: 18px;
-
-    filter:
-        drop-shadow(0 0 15px #42caff);
-
-    animation:
-        giftHeart 1.3s infinite;
-}
-
-@keyframes giftHeart {
-
-    50% {
-        transform: scale(1.2);
-    }
-}
-
-.close-gift {
-    margin-top: 5px;
-
-    padding: 10px 24px;
-}
-
-
-/* =========================
-   SPARKLE HADIAH
-========================= */
-
-.gift-sparkle {
-    position: fixed;
-
-    color: #9deaff;
-
-    pointer-events: none;
-
-    z-index: 200;
-
-    text-shadow:
-        0 0 12px #45caff;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 500px) {
-
-    .card {
-        padding: 45px 25px;
-    }
-
-    h1 {
-        font-size: 34px;
-    }
-
-    .subtitle {
-        font-size: 14px;
-    }
-
-    .heart-box {
-        transform: scale(.9);
+    #playerUI{
+        width:190px;
     }
 }
 </style>
 </head>
 
-
 <body>
 
-<!-- Background glow -->
-<div class="glow"></div>
+<canvas id="game"></canvas>
 
+<div id="ui">
 
-<!-- =========================
-     HALAMAN UTAMA
-========================= -->
+<div id="playerUI" class="panel">
 
-<div class="card">
+<div class="statTitle">
+LV. 15 — FOREST KNIGHT
+</div>
 
-    <div class="heart-box">
-        <div class="heart"></div>
-    </div>
+<div class="smallText">
+HP <span id="hpText">165 / 165</span>
+</div>
 
-    <h1>For Disa 💙</h1>
+<div class="bar">
+<div class="fill" id="hpFill"></div>
+</div>
 
-    <div class="line"></div>
+<div class="smallText">MANA</div>
 
-    <p class="subtitle">
-        Some moments feel like rain...<br>
-        quiet, beautiful, and worth remembering ☁️
-    </p>
+<div class="bar">
+<div class="fill" id="manaFill"></div>
+</div>
 
-    <button onclick="openGift()">
-        ✦ Tap gently
-    </button>
+<div class="smallText">ULTIMATE</div>
+
+<div class="bar">
+<div class="fill" id="ultimateFill"></div>
+</div>
 
 </div>
 
+<div id="bossUI" class="panel">
 
-<!-- =========================
-     HADIAH
-========================= -->
+<div id="bossName">
+ANCIENT FOREST GUARDIAN
+</div>
 
-<div class="gift" id="gift">
-
-    <div class="gift-glow"></div>
-
-    <div class="gift-box">
-
-        <div class="gift-lid"></div>
-
-        <div class="gift-body"></div>
-
-        <div class="gift-ribbon"></div>
-
-    </div>
-
-
-    <div class="gift-message">
-
-        <div class="sparkles">
-            ✦ ✧ ✦
-        </div>
-
-        <h2>
-            For Disa 💙
-        </h2>
-
-        <p>
-            A little gift,<br>
-            just to make this moment brighter ✨
-        </p>
-
-        <div class="big-heart">
-            💙
-        </div>
-
-        <button
-            class="close-gift"
-            onclick="closeGift()">
-
-            Close ♡
-
-        </button>
-
-    </div>
+<div class="bar">
+<div class="fill" id="bossFill"></div>
+</div>
 
 </div>
 
+<div id="message"></div>
+
+<div id="joystick">
+<div id="stick"></div>
+</div>
+
+<div id="actionControls">
+
+<button class="action" id="ultimate">
+ULT
+</button>
+
+<button class="action" id="jump">
+↑
+</button>
+
+<button class="action" id="attack">
+⚔
+</button>
+
+</div>
+
+</div>
 
 <script>
 
-/* =========================
-   HUJAN
-========================= */
+/* =================================
+   CANVAS
+================================= */
 
-function createRain() {
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
 
-    const rain =
-        document.createElement("div");
+ctx.imageSmoothingEnabled=false;
 
-    rain.className = "rain";
+let W,H;
+let time=0;
+let cameraX=0;
 
-    rain.style.left =
-        Math.random() * 100 + "vw";
+const WORLD_WIDTH=6500;
 
-    rain.style.height =
-        (50 + Math.random() * 70) + "px";
+function resize(){
 
-    rain.style.animationDuration =
-        (.7 + Math.random() * 1.1) + "s";
+    canvas.width=innerWidth;
+    canvas.height=innerHeight;
 
-    document.body.appendChild(rain);
-
-    setTimeout(() => {
-
-        rain.remove();
-
-    }, 2500);
+    W=canvas.width;
+    H=canvas.height;
 }
 
-setInterval(createRain, 70);
+addEventListener("resize",resize);
 
+resize();
 
-/* =========================
-   TITIK AIR
-========================= */
-
-function createDrop() {
-
-    const drop =
-        document.createElement("div");
-
-    drop.className = "drop";
-
-    drop.style.left =
-        Math.random() * 100 + "vw";
-
-    drop.style.animationDuration =
-        (2 + Math.random() * 3) + "s";
-
-    document.body.appendChild(drop);
-
-    setTimeout(() => {
-
-        drop.remove();
-
-    }, 6000);
-}
-
-setInterval(createDrop, 500);
-
-
-/* =========================
-   FLOATING HEART
-========================= */
-
-function createHeart() {
-
-    const heart =
-        document.createElement("div");
-
-    heart.className =
-        "float-heart";
-
-    heart.innerHTML =
-        ["♡", "♥", "💙", "✦"][
-            Math.floor(Math.random() * 4)
-        ];
-
-    heart.style.left =
-        Math.random() * 100 + "vw";
-
-    heart.style.animationDuration =
-        (5 + Math.random() * 4) + "s";
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-
-        heart.remove();
-
-    }, 10000);
-}
-
-setInterval(createHeart, 1000);
-
-
-/* =========================
-   BUKA HADIAH
-========================= */
-
-function openGift() {
-
-    const gift =
-        document.getElementById("gift");
-
-    gift.classList.add("show");
-
-    createGiftSparkles();
+function groundY(){
+    return H*.74;
 }
 
 
-/* =========================
-   TUTUP HADIAH
-========================= */
+/* =================================
+   AUDIO ENGINE
+   WEB AUDIO API
+================================= */
 
-function closeGift() {
+let audioContext=null;
+let masterGain=null;
+let forestStarted=false;
 
-    const gift =
-        document.getElementById("gift");
+function initAudio(){
 
-    gift.classList.remove("show");
-}
+    if(!audioContext){
 
+        audioContext=
+        new(
+            window.AudioContext||
+            window.webkitAudioContext
+        )();
 
-/* =========================
-   SPARKLE HADIAH
-========================= */
+        masterGain=
+        audioContext.createGain();
 
-function createGiftSparkles() {
+        masterGain.gain.value=.35;
 
-    for (let i = 0; i < 25; i++) {
-
-        const sparkle =
-            document.createElement("div");
-
-        sparkle.className =
-            "gift-sparkle";
-
-        sparkle.innerHTML =
-            ["✦", "✧", "•", "💙"][
-                Math.floor(Math.random() * 4)
-            ];
-
-        sparkle.style.left =
-            (30 + Math.random() * 40) + "vw";
-
-        sparkle.style.top =
-            (30 + Math.random() * 40) + "vh";
-
-        sparkle.style.fontSize =
-            (12 + Math.random() * 18) + "px";
-
-        const x =
-            Math.random() * 300 - 150;
-
-        const y =
-            Math.random() * 300 - 150;
-
-        sparkle.animate(
-            [
-                {
-                    transform:
-                        "scale(0)",
-                    opacity: 0
-                },
-
-                {
-                    transform:
-                        `translate(${x}px, ${y}px)
-                         scale(1.4)`,
-
-                    opacity: 1
-                },
-
-                {
-                    transform:
-                        `translate(${x * 1.5}px,
-                                   ${y * 1.5}px)
-                         scale(0)`,
-
-                    opacity: 0
-                }
-            ],
-            {
-                duration:
-                    1400 + Math.random() * 700,
-
-                easing: "ease-out"
-            }
+        masterGain.connect(
+            audioContext.destination
         );
+    }
 
-        document.body.appendChild(sparkle);
+    if(
+        audioContext.state==="suspended"
+    ){
 
-        setTimeout(() => {
-
-            sparkle.remove();
-
-        }, 2200);
+        audioContext.resume();
     }
 }
+
+
+/* SUARA PEDANG */
+
+function swordSound(combo=1){
+
+    initAudio();
+
+    const now=
+    audioContext.currentTime;
+
+    const osc=
+    audioContext.createOscillator();
+
+    const gain=
+    audioContext.createGain();
+
+    osc.type="sawtooth";
+
+    let startFreq=
+    500+combo*120;
+
+    let endFreq=
+    130+combo*40;
+
+    osc.frequency.setValueAtTime(
+        startFreq,
+        now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        endFreq,
+        now+.18
+    );
+
+    gain.gain.setValueAtTime(
+        .0001,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .18,
+        now+.01
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now+.22
+    );
+
+    osc.connect(gain);
+
+    gain.connect(masterGain);
+
+    osc.start(now);
+
+    osc.stop(now+.25);
+
+
+    /* SWOOSH */
+
+    const noiseBuffer=
+    audioContext.createBuffer(
+        1,
+        audioContext.sampleRate*.18,
+        audioContext.sampleRate
+    );
+
+    const data=
+    noiseBuffer.getChannelData(0);
+
+    for(
+        let i=0;
+        i<data.length;
+        i++
+    ){
+
+        data[i]=
+        (Math.random()*2-1)*
+        (1-i/data.length);
+    }
+
+    const noise=
+    audioContext.createBufferSource();
+
+    const filter=
+    audioContext.createBiquadFilter();
+
+    const noiseGain=
+    audioContext.createGain();
+
+    noise.buffer=noiseBuffer;
+
+    filter.type="bandpass";
+
+    filter.frequency.value=
+    1200+combo*300;
+
+    noiseGain.gain.value=.08;
+
+    noise.connect(filter);
+
+    filter.connect(noiseGain);
+
+    noiseGain.connect(masterGain);
+
+    noise.start();
+}
+
+
+/* SUARA LOMPAT */
+
+function jumpSound(){
+
+    initAudio();
+
+    const now=
+    audioContext.currentTime;
+
+    const osc=
+    audioContext.createOscillator();
+
+    const gain=
+    audioContext.createGain();
+
+    osc.type="square";
+
+    osc.frequency.setValueAtTime(
+        180,
+        now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        480,
+        now+.15
+    );
+
+    gain.gain.setValueAtTime(
+        .12,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+.18
+    );
+
+    osc.connect(gain);
+
+    gain.connect(masterGain);
+
+    osc.start();
+
+    osc.stop(now+.2);
+}
+
+
+/* SUARA ULTIMATE */
+
+function ultimateSound(){
+
+    initAudio();
+
+    const now=
+    audioContext.currentTime;
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        const osc=
+        audioContext.createOscillator();
+
+        const gain=
+        audioContext.createGain();
+
+        osc.type=
+        i===0
+        ?"sine"
+        :"sawtooth";
+
+        osc.frequency.setValueAtTime(
+            160*(i+1),
+            now
+        );
+
+        osc.frequency.exponentialRampToValueAtTime(
+            900*(i+1),
+            now+.6
+        );
+
+        gain.gain.setValueAtTime(
+            .001,
+            now
+        );
+
+        gain.gain.linearRampToValueAtTime(
+            .12,
+            now+.15
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            now+.9
+        );
+
+        osc.connect(gain);
+
+        gain.connect(masterGain);
+
+        osc.start();
+
+        osc.stop(now+1);
+    }
+}
+
+
+/* SUARA DAMAGE */
+
+function hitSound(){
+
+    initAudio();
+
+    const now=
+    audioContext.currentTime;
+
+    const osc=
+    audioContext.createOscillator();
+
+    const gain=
+    audioContext.createGain();
+
+    osc.type="square";
+
+    osc.frequency.setValueAtTime(
+        120,
+        now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        55,
+        now+.12
+    );
+
+    gain.gain.setValueAtTime(
+        .12,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+.15
+    );
+
+    osc.connect(gain);
+
+    gain.connect(masterGain);
+
+    osc.start();
+
+    osc.stop(now+.16);
+}
+
+
+/* =================================
+   SUARA HUTAN PROCEDURAL
+================================= */
+
+function forestAmbience(){
+
+    if(forestStarted)return;
+
+    initAudio();
+
+    forestStarted=true;
+
+
+    function bird(){
+
+        if(!forestStarted)return;
+
+        const now=
+        audioContext.currentTime;
+
+        const osc=
+        audioContext.createOscillator();
+
+        const gain=
+        audioContext.createGain();
+
+        osc.type="sine";
+
+        let f=
+        1100+
+        Math.random()*900;
+
+        osc.frequency.setValueAtTime(
+            f,
+            now
+        );
+
+        osc.frequency.linearRampToValueAtTime(
+            f*1.3,
+            now+.08
+        );
+
+        osc.frequency.linearRampToValueAtTime(
+            f*.8,
+            now+.25
+        );
+
+        gain.gain.setValueAtTime(
+            .0001,
+            now
+        );
+
+        gain.gain.linearRampToValueAtTime(
+            .025,
+            now+.03
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now+.3
+        );
+
+        osc.connect(gain);
+
+        gain.connect(masterGain);
+
+        osc.start();
+
+        osc.stop(now+.35);
+
+        setTimeout(
+            bird,
+            1800+
+            Math.random()*4000
+        );
+    }
+
+
+    function wind(){
+
+        if(!forestStarted)return;
+
+        const buffer=
+        audioContext.createBuffer(
+            1,
+            audioContext.sampleRate*2,
+            audioContext.sampleRate
+        );
+
+        const data=
+        buffer.getChannelData(0);
+
+        for(
+            let i=0;
+            i<data.length;
+            i++
+        ){
+
+            data[i]=
+            Math.random()*2-1;
+        }
+
+        const source=
+        audioContext.createBufferSource();
+
+        const filter=
+        audioContext.createBiquadFilter();
+
+        const gain=
+        audioContext.createGain();
+
+        source.buffer=buffer;
+
+        filter.type="lowpass";
+
+        filter.frequency.value=
+        500;
+
+        gain.gain.value=.018;
+
+        source.connect(filter);
+
+        filter.connect(gain);
+
+        gain.connect(masterGain);
+
+        source.start();
+
+        setTimeout(
+            wind,
+            1800
+        );
+    }
+
+
+    bird();
+
+    wind();
+}
+
+
+/* =================================
+   START AUDIO
+================================= */
+
+function startAudio(){
+
+    initAudio();
+
+    forestAmbience();
+}
+
+document.addEventListener(
+    "pointerdown",
+    startAudio,
+    {once:true}
+);
+
+document.addEventListener(
+    "keydown",
+    startAudio,
+    {once:true}
+);
+
+
+/* =================================
+   PLAYER
+================================= */
+
+const player={
+
+    x:350,
+    y:0,
+
+    w:42,
+    h:62,
+
+    vx:0,
+    vy:0,
+
+    speed:4.8,
+
+    direction:1,
+
+    hp:165,
+    maxHP:165,
+
+    mana:100,
+    maxMana:100,
+
+    ultimateEnergy:0,
+
+    attacking:false,
+    attackTimer:0,
+
+    combo:0,
+    comboTimer:0,
+
+    ultimate:false,
+    ultimateTimer:0,
+
+    invincible:0,
+
+    jumps:0,
+
+    walk:0
+};
+
+
+/* =================================
+   MONSTERS
+================================= */
+
+const monsters=[];
+
+function spawnMonster(x,type=0){
+
+    monsters.push({
+
+        x,
+
+        w:42+type*8,
+        h:50+type*8,
+
+        hp:75+type*35,
+        maxHP:75+type*35,
+
+        speed:1.1+Math.random()*.7,
+
+        alive:true,
+
+        direction:-1,
+
+        attackCooldown:0,
+
+        hurt:0
+    });
+}
+
+spawnMonster(1000);
+spawnMonster(1500,1);
+spawnMonster(2100);
+spawnMonster(2800,1);
+spawnMonster(3500);
+spawnMonster(4200,1);
+
+
+/* =================================
+   HEALING ITEMS
+================================= */
+
+const healingItems=[
+
+{x:750,amount:50,active:true,respawn:0},
+{x:1850,amount:50,active:true,respawn:0},
+{x:3100,amount:50,active:true,respawn:0},
+{x:4700,amount:50,active:true,respawn:0}
+
+];
+
+
+/* =================================
+   BOSS
+================================= */
+
+const boss={
+
+    x:5500,
+
+    w:130,
+    h:125,
+
+    hp:900,
+    maxHP:900,
+
+    alive:true,
+
+    active:false,
+
+    speed:1.2,
+
+    attackCooldown:0,
+
+    direction:-1,
+
+    hurt:0
+};
+
+
+/* =================================
+   EFFECTS
+================================= */
+
+let particles=[];
+let neonParticles=[];
+let slashes=[];
+let damageTexts=[];
+let waterMist=[];
+
+
+/* =================================
+   KEYBOARD
+================================= */
+
+const keys={};
+
+addEventListener(
+    "keydown",
+    e=>{
+
+        keys[e.key.toLowerCase()]=true;
+
+        if(e.code==="Space")
+        jump();
+
+        if(e.key.toLowerCase()==="j")
+        attack();
+
+        if(e.key.toLowerCase()==="k")
+        ultimate();
+    }
+);
+
+addEventListener(
+    "keyup",
+    e=>{
+        keys[e.key.toLowerCase()]=false;
+    }
+);
+
+
+/* =================================
+   PARTICLES
+================================= */
+
+function createParticles(
+x,y,color,count
+){
+
+    for(let i=0;i<count;i++){
+
+        particles.push({
+
+            x,y,
+
+            vx:
+            (Math.random()-.5)*7,
+
+            vy:
+            (Math.random()-.7)*7,
+
+            size:
+            2+Math.random()*4,
+
+            life:
+            30+Math.random()*25,
+
+            color
+        });
+    }
+}
+
+function createNeon(
+x,y,color,count
+){
+
+    for(let i=0;i<count;i++){
+
+        let a=
+        Math.random()*Math.PI*2;
+
+        let s=
+        2+Math.random()*7;
+
+        neonParticles.push({
+
+            x,y,
+
+            vx:
+            Math.cos(a)*s,
+
+            vy:
+            Math.sin(a)*s,
+
+            size:
+            2+Math.random()*4,
+
+            life:
+            30+Math.random()*30,
+
+            color
+        });
+    }
+}
+
+function damageText(
+x,y,text,color
+){
+
+    damageTexts.push({
+
+        x,y,
+
+        text,
+        color,
+
+        vy:-1,
+
+        life:45
+    });
+}
+
+
+/* =================================
+   JUMP
+================================= */
+
+function jump(){
+
+    startAudio();
+
+    if(player.jumps<2){
+
+        jumpSound();
+
+        player.vy=-13;
+
+        player.jumps++;
+
+        createParticles(
+
+            player.x,
+
+            groundY(),
+
+            "#b4e9e3",
+
+            10
+        );
+    }
+}
+
+
+/* =================================
+   ATTACK
+================================= */
+
+function attack(){
+
+    startAudio();
+
+    if(
+        player.attacking||
+        player.ultimate
+    )return;
+
+
+    player.combo++;
+
+    if(player.combo>3)
+    player.combo=1;
+
+
+    swordSound(
+        player.combo
+    );
+
+
+    player.comboTimer=40;
+
+    player.attacking=true;
+
+    player.attackTimer=16;
+
+
+    slashes.push({
+
+        x:
+        player.x+
+        player.direction*35,
+
+        y:
+        player.y+28,
+
+        direction:
+        player.direction,
+
+        combo:
+        player.combo,
+
+        life:18,
+
+        maxLife:18
+    });
+
+
+    setTimeout(
+        hitEnemies,
+        100
+    );
+}
+
+
+function hitEnemies(){
+
+    const range=
+
+    player.combo===3
+
+    ?145
+
+    :95;
+
+
+    const damage=
+
+    player.combo===1
+
+    ?24
+
+    :player.combo===2
+
+    ?32
+
+    :48;
+
+
+    monsters.forEach(m=>{
+
+        if(!m.alive)return;
+
+        const dx=
+        m.x-player.x;
+
+        if(
+
+            Math.abs(dx)<range&&
+
+            Math.sign(dx)===
+
+            player.direction
+
+        ){
+
+            hurtMonster(
+                m,
+                damage
+            );
+        }
+    });
+
+
+    const dx=
+    boss.x-player.x;
+
+
+    if(
+
+        boss.alive&&
+
+        Math.abs(dx)<range+50&&
+
+        Math.sign(dx)===
+
+        player.direction
+
+    ){
+
+        hurtBoss(
+            damage
+        );
+    }
+}
+
+
+/* =================================
+   ULTIMATE
+================================= */
+
+function ultimate(){
+
+    startAudio();
+
+    if(
+
+        player.ultimate||
+
+        player.ultimateEnergy<100
+
+    )return;
+
+
+    ultimateSound();
+
+
+    player.ultimate=true;
+
+    player.ultimateTimer=100;
+
+    player.invincible=110;
+
+    player.ultimateEnergy=0;
+
+
+    showMessage(
+        "⚡ NEON STARFALL ⚡"
+    );
+
+
+    createNeon(
+
+        player.x,
+
+        player.y+20,
+
+        "#ff3eea",
+
+        80
+    );
+
+
+    createNeon(
+
+        player.x,
+
+        player.y+20,
+
+        "#38eaff",
+
+        80
+    );
+
+
+    setTimeout(()=>{
+
+        monsters.forEach(m=>{
+
+            if(
+
+                m.alive&&
+
+                Math.abs(
+                    m.x-player.x
+                )<550
+
+            ){
+
+                hurtMonster(
+                    m,
+                    120
+                );
+            }
+
+        });
+
+
+        if(
+
+            boss.alive&&
+
+            Math.abs(
+                boss.x-player.x
+            )<650
+
+        ){
+
+            hurtBoss(180);
+        }
+
+    },300);
+}
+
+
+/* =================================
+   DAMAGE MONSTER
+================================= */
+
+function hurtMonster(
+m,
+damage
+){
+
+    hitSound();
+
+    m.hp-=damage;
+
+    m.hurt=10;
+
+
+    createParticles(
+
+        m.x,
+
+        groundY()-m.h/2,
+
+        "#b6ff91",
+
+        15
+    );
+
+
+    createNeon(
+
+        m.x,
+
+        groundY()-m.h/2,
+
+        "#56ffdd",
+
+        8
+    );
+
+
+    damageText(
+
+        m.x,
+
+        groundY()-m.h,
+
+        "-"+damage,
+
+        "#eaffae"
+    );
+
+
+    player.ultimateEnergy=
+    Math.min(
+
+        100,
+
+        player.ultimateEnergy+12
+    );
+
+
+    if(m.hp<=0){
+
+        m.hp=0;
+
+        m.alive=false;
+
+
+        createNeon(
+
+            m.x,
+
+            groundY()-30,
+
+            "#41f6ff",
+
+            35
+        );
+    }
+}
+
+
+/* =================================
+   DAMAGE BOSS
+================================= */
+
+function hurtBoss(damage){
+
+    hitSound();
+
+    boss.hp-=damage;
+
+    boss.hurt=12;
+
+
+    createNeon(
+
+        boss.x,
+
+        groundY()-70,
+
+        "#ff4be5",
+
+        30
+    );
+
+
+    damageText(
+
+        boss.x,
+
+        groundY()-boss.h,
+
+        "-"+damage,
+
+        "#ffb2ef"
+    );
+
+
+    if(boss.hp<=0){
+
+        boss.hp=0;
+
+        boss.alive=false;
+
+
+        showMessage(
+            "THE FOREST GUARDIAN<br>HAS FALLEN"
+        );
+    }
+}
+
+
+/* =================================
+   DAMAGE PLAYER
+================================= */
+
+function hurtPlayer(damage){
+
+    if(player.invincible>0)
+    return;
+
+
+    hitSound();
+
+    player.hp-=damage;
+
+    player.invincible=45;
+
+
+    createParticles(
+
+        player.x,
+
+        player.y+20,
+
+        "#ff5064",
+
+        15
+    );
+
+
+    if(player.hp<=0){
+
+        player.hp=
+        player.maxHP;
+
+        player.x=350;
+
+
+        showMessage(
+            "THE KNIGHT RISES AGAIN"
+        );
+    }
+}
+
+
+/* =================================
+   HEALING
+================================= */
+
+function updateHealingItems(){
+
+    healingItems.forEach(item=>{
+
+        if(item.active){
+
+            if(
+
+                Math.abs(
+                    player.x-item.x
+                )<45&&
+
+                player.hp<
+                player.maxHP
+
+            ){
+
+                player.hp=
+                Math.min(
+
+                    player.maxHP,
+
+                    player.hp+
+                    item.amount
+
+                );
+
+
+                item.active=false;
+
+                item.respawn=600;
+
+
+                createNeon(
+
+                    item.x,
+
+                    groundY()-40,
+
+                    "#65ff9a",
+
+                    30
+                );
+
+
+                damageText(
+
+                    item.x,
+
+                    groundY()-70,
+
+                    "+"+
+                    item.amount+
+                    " HP",
+
+                    "#6dff9b"
+                );
+
+
+                showMessage(
+                    "❤ HP RECOVERED"
+                );
+            }
+
+        }else{
+
+            item.respawn--;
+
+            if(item.respawn<=0){
+
+                item.active=true;
+            }
+        }
+    });
+}
+
+
+/* =================================
+   PLAYER UPDATE
+================================= */
+
+let joyX=0;
+
+function updatePlayer(){
+
+    let move=0;
+
+
+    if(
+
+        keys["a"]||
+
+        keys["arrowleft"]
+
+    )move=-1;
+
+
+    if(
+
+        keys["d"]||
+
+        keys["arrowright"]
+
+    )move=1;
+
+
+    if(Math.abs(joyX)>.1)
+    move=joyX;
+
+
+    player.vx=
+    move*player.speed;
+
+
+    if(move>.1)
+    player.direction=1;
+
+
+    if(move<-.1)
+    player.direction=-1;
+
+
+    player.x+=player.vx;
+
+    player.walk+=
+    Math.abs(player.vx)*.18;
+
+
+    player.vy+=.68;
+
+    player.y+=player.vy;
+
+
+    if(
+
+        player.y+
+        player.h>=
+        groundY()
+
+    ){
+
+        player.y=
+        groundY()-
+        player.h;
+
+        player.vy=0;
+
+        player.jumps=0;
+    }
+
+
+    player.x=
+    Math.max(
+
+        20,
+
+        Math.min(
+
+            WORLD_WIDTH-20,
+
+            player.x
+
+        )
+    );
+
+
+    if(player.attackTimer>0)
+    player.attackTimer--;
+
+    else
+    player.attacking=false;
+
+
+    if(player.comboTimer>0)
+    player.comboTimer--;
+
+    else
+    player.combo=0;
+
+
+    if(player.invincible>0)
+    player.invincible--;
+
+
+    if(player.ultimateTimer>0)
+    player.ultimateTimer--;
+
+    else
+    player.ultimate=false;
+
+
+    player.mana=
+    Math.min(
+
+        player.maxMana,
+
+        player.mana+.03
+    );
+
+
+    let target=
+    player.x-W*.38;
+
+
+    cameraX+=
+    (target-cameraX)*.07;
+
+
+    cameraX=
+    Math.max(
+
+        0,
+
+        Math.min(
+
+            WORLD_WIDTH-W,
+
+            cameraX
+
+        )
+    );
+}
+
+
+/* =================================
+   MONSTER UPDATE
+================================= */
+
+function updateMonsters(){
+
+    monsters.forEach(m=>{
+
+        if(!m.alive)return;
+
+
+        let dx=
+        player.x-m.x;
+
+
+        let distance=
+        Math.abs(dx);
+
+
+        m.direction=
+        dx>0?1:-1;
+
+
+        if(distance<400){
+
+            if(distance>65){
+
+                m.x+=
+                Math.sign(dx)*
+                m.speed;
+
+            }
+
+            else if(
+                m.attackCooldown<=0
+            ){
+
+                hurtPlayer(10);
+
+                m.attackCooldown=55;
+            }
+        }
+
+
+        if(m.attackCooldown>0)
+        m.attackCooldown--;
+
+
+        if(m.hurt>0)
+        m.hurt--;
+
+    });
+}
+
+
+/* =================================
+   BOSS UPDATE
+================================= */
+
+function updateBoss(){
+
+    if(!boss.alive)
+    return;
+
+
+    if(
+
+        Math.abs(
+            player.x-boss.x
+        )<750
+
+    ){
+
+        boss.active=true;
+
+        document
+        .getElementById("bossUI")
+        .style.display="block";
+    }
+
+
+    if(!boss.active)
+    return;
+
+
+    let dx=
+    player.x-boss.x;
+
+
+    let distance=
+    Math.abs(dx);
+
+
+    boss.direction=
+    dx>0?1:-1;
+
+
+    if(distance>140){
+
+        boss.x+=
+        Math.sign(dx)*
+        boss.speed;
+
+    }
+
+    else if(
+        boss.attackCooldown<=0
+    ){
+
+        hurtPlayer(20);
+
+        boss.attackCooldown=80;
+    }
+
+
+    if(boss.attackCooldown>0)
+    boss.attackCooldown--;
+
+
+    if(boss.hurt>0)
+    boss.hurt--;
+}
+
+
+/* =================================
+   EFFECT UPDATE
+================================= */
+
+function updateEffects(){
+
+    particles.forEach(p=>{
+
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        p.vy+=.15;
+
+        p.life--;
+    });
+
+
+    particles=
+    particles.filter(
+        p=>p.life>0
+    );
+
+
+    neonParticles.forEach(p=>{
+
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        p.vx*=.95;
+        p.vy*=.95;
+
+        p.life--;
+    });
+
+
+    neonParticles=
+    neonParticles.filter(
+        p=>p.life>0
+    );
+
+
+    slashes.forEach(
+        s=>s.life--
+    );
+
+
+    slashes=
+    slashes.filter(
+        s=>s.life>0
+    );
+
+
+    damageTexts.forEach(d=>{
+
+        d.y+=d.vy;
+
+        d.life--;
+    });
+
+
+    damageTexts=
+    damageTexts.filter(
+        d=>d.life>0
+    );
+}
+
+
+/* =================================
+   SKY
+================================= */
+
+function drawSky(){
+
+    const sky=
+    ctx.createLinearGradient(
+        0,0,0,H
+    );
+
+
+    sky.addColorStop(
+        0,
+        "#142637"
+    );
+
+    sky.addColorStop(
+        .35,
+        "#657889"
+    );
+
+    sky.addColorStop(
+        .62,
+        "#d69d70"
+    );
+
+    sky.addColorStop(
+        1,
+        "#203c38"
+    );
+
+
+    ctx.fillStyle=sky;
+
+    ctx.fillRect(
+        0,0,W,H
+    );
+
+
+    const sun=
+    ctx.createRadialGradient(
+
+        W*.55,
+        H*.24,
+        5,
+
+        W*.55,
+        H*.24,
+        H*.42
+
+    );
+
+
+    sun.addColorStop(
+        0,
+        "rgba(255,250,190,.95)"
+    );
+
+    sun.addColorStop(
+        .3,
+        "rgba(255,210,135,.55)"
+    );
+
+    sun.addColorStop(
+        1,
+        "rgba(255,180,100,0)"
+    );
+
+
+    ctx.fillStyle=sun;
+
+    ctx.fillRect(
+        0,0,W,H
+    );
+}
+
+
+/* =================================
+   MOUNTAINS
+================================= */
+
+function drawMountains(){
+
+    ctx.fillStyle="#4d5967";
+
+
+    for(
+        let x=-250;
+        x<W+300;
+        x+=280
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            x,
+            groundY()
+        );
+
+        ctx.lineTo(
+            x+140,
+            H*.28
+        );
+
+        ctx.lineTo(
+            x+280,
+            groundY()
+        );
+
+        ctx.fill();
+    }
+}
+
+
+/* =================================
+   FOREST
+================================= */
+
+function drawForestLayer(
+spacing,
+color,
+speed,
+size
+){
+
+    const offset=
+    cameraX*speed;
+
+
+    const start=
+    Math.floor(
+        offset/spacing
+    )*
+    spacing-
+    spacing;
+
+
+    ctx.fillStyle=color;
+
+
+    for(
+
+        let worldX=start;
+
+        worldX<
+        offset+W+spacing;
+
+        worldX+=spacing
+
+    ){
+
+        const x=
+        worldX-offset;
+
+
+        const treeH=
+
+        size+
+
+        Math.sin(
+            worldX*.02
+        )*35;
+
+
+        ctx.fillRect(
+
+            x+25,
+
+            groundY()-treeH,
+
+            18,
+
+            treeH
+
+        );
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            x+34,
+
+            groundY()-
+            treeH+
+            25,
+
+            treeH*.28,
+
+            0,
+
+            Math.PI*2
+
+        );
+
+        ctx.fill();
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            x+5,
+
+            groundY()-
+            treeH+
+            65,
+
+            treeH*.2,
+
+            0,
+
+            Math.PI*2
+
+        );
+
+        ctx.fill();
+    }
+}
+
+
+/* =================================
+   WATERFALL
+================================= */
+
+function drawWaterfall(){
+
+    const x=
+    2600-cameraX;
+
+
+    if(
+        x<-300||
+        x>W+300
+    )return;
+
+
+    const top=H*.18;
+
+    const bottom=
+    groundY()+20;
+
+    const width=150;
+
+    const height=
+    bottom-top;
+
+
+    ctx.fillStyle="#26363a";
+
+    ctx.fillRect(
+        x-50,
+        top,
+        width+100,
+        height
+    );
+
+
+    const water=
+    ctx.createLinearGradient(
+        x,top,x,bottom
+    );
+
+
+    water.addColorStop(
+        0,
+        "rgba(220,250,255,.85)"
+    );
+
+    water.addColorStop(
+        .3,
+        "rgba(90,200,235,.8)"
+    );
+
+    water.addColorStop(
+        1,
+        "rgba(190,245,255,.3)"
+    );
+
+
+    ctx.fillStyle=water;
+
+    ctx.fillRect(
+        x,
+        top,
+        width,
+        height
+    );
+
+
+    for(let i=0;i<20;i++){
+
+        let streamX=
+
+        x+
+
+        (i/20)*width;
+
+
+        let wave=
+
+        Math.sin(
+            time*.07+i*2
+        )*8;
+
+
+        ctx.fillStyle=
+        "rgba(255,255,255,.25)";
+
+
+        ctx.fillRect(
+
+            streamX+wave,
+
+            top,
+
+            3,
+
+            height
+
+        );
+    }
+}
+
+
+/* =================================
+   RIVER
+================================= */
+
+function drawRiver(){
+
+    const y=
+    groundY()-20;
+
+    const riverH=
+    H-y;
+
+
+    const river=
+    ctx.createLinearGradient(
+        0,y,0,H
+    );
+
+
+    river.addColorStop(
+        0,
+        "#3d8793"
+    );
+
+    river.addColorStop(
+        .3,
+        "#286978"
+    );
+
+    river.addColorStop(
+        1,
+        "#0a202d"
+    );
+
+
+    ctx.fillStyle=river;
+
+    ctx.fillRect(
+        0,y,W,riverH
+    );
+
+
+    for(
+        let row=0;
+        row<8;
+        row++
+    ){
+
+        for(
+            let i=0;
+            i<14;
+            i++
+        ){
+
+            let xx=
+
+            (
+
+                i*95+
+
+                time*
+                (
+                    1.5+row*.2
+                )*3
+
+            )%
+
+            (W+150)
+
+            -75;
+
+
+            let yy=
+
+            y+
+
+            20+
+
+            row*15+
+
+            Math.sin(
+                time*.05+i+row
+            )*3;
+
+
+            ctx.globalAlpha=
+            .13+row*.015;
+
+
+            ctx.strokeStyle=
+            "#d8ffff";
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                xx,yy
+            );
+
+            ctx.lineTo(
+                xx+45,yy
+            );
+
+            ctx.stroke();
+        }
+    }
+
+    ctx.globalAlpha=1;
+}
+
+
+/* =================================
+   GROUND
+================================= */
+
+function drawGround(){
+
+    ctx.fillStyle="#183b2c";
+
+    ctx.fillRect(
+
+        0,
+
+        groundY()-5,
+
+        W,
+
+        28
+
+    );
+
+
+    for(
+        let x=0;
+        x<W;
+        x+=7
+    ){
+
+        let h=
+
+        4+
+
+        Math.abs(
+
+            Math.sin(
+                x*.12+time*.03
+            )
+
+        )*8;
+
+
+        ctx.fillStyle=
+
+        x%3===0
+
+        ?"#4d8d4f"
+
+        :"#2d673d";
+
+
+        ctx.fillRect(
+
+            x,
+
+            groundY()-h,
+
+            2,
+
+            h
+
+        );
+    }
+}
+
+
+/* =================================
+   HEALING ITEM DRAW
+================================= */
+
+function drawHealingItems(){
+
+    healingItems.forEach(item=>{
+
+        if(!item.active)
+        return;
+
+
+        const x=
+        item.x-cameraX;
+
+        const y=
+        groundY()-48;
+
+
+        if(
+            x<-50||
+            x>W+50
+        )return;
+
+
+        ctx.save();
+
+        ctx.shadowBlur=20;
+
+        ctx.shadowColor=
+        "#58ff8c";
+
+
+        ctx.fillStyle=
+        "#4eff88";
+
+        ctx.fillRect(
+            x-10,
+            y+8,
+            20,
+            25
+        );
+
+
+        ctx.fillStyle=
+        "#ff4f78";
+
+        ctx.fillRect(
+            x-6,
+            y+20,
+            12,
+            9
+        );
+
+
+        ctx.fillStyle=
+        "#fff";
+
+        ctx.fillRect(
+            x-2,
+            y+13,
+            4,
+            12
+        );
+
+        ctx.fillRect(
+            x-6,
+            y+17,
+            12,
+            4
+        );
+
+        ctx.restore();
+    });
+}
+
+
+/* =================================
+   PLAYER DRAW
+================================= */
+
+function drawPlayer(){
+
+    let x=
+    player.x-cameraX;
+
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        player.y
+    );
+
+
+    ctx.scale(
+        player.direction,
+        1
+    );
+
+
+    /* CAPE */
+
+    ctx.fillStyle=
+
+    player.ultimate
+
+    ?"#a020e8"
+
+    :"#304e72";
+
+
+    ctx.fillRect(
+        -19,
+        19,
+        10,
+        33
+    );
+
+
+    /* LEGS */
+
+    let walk=
+    Math.sin(
+        player.walk
+    )*4;
+
+
+    ctx.fillStyle=
+    "#202c3c";
+
+    ctx.fillRect(
+        -13,
+        43,
+        9,
+        18+walk
+    );
+
+    ctx.fillRect(
+        5,
+        43,
+        9,
+        18-walk
+    );
+
+
+    /* ARMOR */
+
+    ctx.fillStyle=
+    "#9daeb6";
+
+    ctx.fillRect(
+        -15,
+        21,
+        31,
+        25
+    );
+
+
+    /* NEON CORE */
+
+    ctx.shadowBlur=12;
+
+    ctx.shadowColor=
+
+    player.ultimate
+
+    ?"#ff35dc"
+
+    :"#45eaff";
+
+
+    ctx.fillStyle=
+
+    player.ultimate
+
+    ?"#ff75ec"
+
+    :"#56dfff";
+
+
+    ctx.fillRect(
+        -3,
+        29,
+        6,
+        8
+    );
+
+
+    ctx.shadowBlur=0;
+
+
+    /* HEAD */
+
+    ctx.fillStyle=
+    "#d4b98e";
+
+    ctx.fillRect(
+        -10,
+        8,
+        23,
+        15
+    );
+
+
+    /* HELMET */
+
+    ctx.fillStyle=
+    "#657783";
+
+    ctx.fillRect(
+        -13,
+        2,
+        28,
+        13
+    );
+
+
+    /* SWORD */
+
+    ctx.save();
+
+    ctx.translate(
+        20,
+        30
+    );
+
+
+    if(player.attacking){
+
+        ctx.rotate(
+
+            player.combo===1
+
+            ?-.5
+
+            :player.combo===2
+
+            ?.2
+
+            :-1.2
+
+        );
+    }
+
+
+    ctx.fillStyle=
+    "#dffaff";
+
+    ctx.fillRect(
+        0,
+        -3,
+        43,
+        6
+    );
+
+
+    ctx.fillStyle=
+    "#e2bc61";
+
+    ctx.fillRect(
+        -5,
+        -9,
+        6,
+        18
+    );
+
+
+    ctx.restore();
+
+    ctx.restore();
+}
+
+
+/* =================================
+   MONSTER DRAW
+================================= */
+
+function drawMonster(m){
+
+    if(!m.alive)
+    return;
+
+
+    let x=
+    m.x-cameraX;
+
+
+    if(
+        x<-100||
+        x>W+100
+    )return;
+
+
+    let y=
+    groundY()-m.h;
+
+
+    ctx.save();
+
+    ctx.translate(
+        x,y
+    );
+
+    ctx.scale(
+        m.direction,
+        1
+    );
+
+
+    ctx.fillStyle=
+
+    m.hurt>0
+
+    ?"#d8ffbf"
+
+    :"#4b7656";
+
+
+    ctx.fillRect(
+        -22,
+        18,
+        47,
+        28
+    );
+
+
+    ctx.fillStyle=
+    "#668d5e";
+
+    ctx.fillRect(
+        -18,
+        4,
+        38,
+        25
+    );
+
+
+    ctx.shadowBlur=10;
+
+    ctx.shadowColor=
+    "#ff3045";
+
+
+    ctx.fillStyle=
+    "#ff4257";
+
+    ctx.fillRect(
+        9,
+        13,
+        5,
+        5
+    );
+
+
+    ctx.restore();
+
+
+    /* HP */
+
+    ctx.fillStyle=
+    "rgba(0,0,0,.7)";
+
+    ctx.fillRect(
+        x-30,
+        y-13,
+        60,
+        5
+    );
+
+
+    ctx.fillStyle=
+    "#67e56d";
+
+    ctx.fillRect(
+
+        x-30,
+
+        y-13,
+
+        60*
+        (
+            m.hp/m.maxHP
+        ),
+
+        5
+    );
+}
+
+
+/* =================================
+   BOSS DRAW
+================================= */
+
+function drawBoss(){
+
+    if(!boss.alive)
+    return;
+
+
+    let x=
+    boss.x-cameraX;
+
+
+    if(
+        x<-200||
+        x>W+200
+    )return;
+
+
+    let y=
+    groundY()-boss.h;
+
+
+    ctx.save();
+
+    ctx.translate(
+        x,y
+    );
+
+    ctx.scale(
+        boss.direction,
+        1
+    );
+
+
+    ctx.shadowBlur=30;
+
+    ctx.shadowColor=
+    "#c13cff";
+
+
+    ctx.fillStyle=
+    "#405e50";
+
+    ctx.fillRect(
+        -58,
+        42,
+        116,
+        55
+    );
+
+
+    ctx.fillStyle=
+    "#587b67";
+
+    ctx.fillRect(
+        -44,
+        6,
+        88,
+        50
+    );
+
+
+    ctx.fillStyle=
+    "#ff67e8";
+
+    ctx.fillRect(
+        18,
+        25,
+        11,
+        7
+    );
+
+
+    ctx.restore();
+}
+
+
+/* =================================
+   SLASH DRAW
+================================= */
+
+function drawSlashes(){
+
+    slashes.forEach(s=>{
+
+        let x=
+        s.x-cameraX;
+
+
+        let progress=
+
+        1-
+        s.life/
+        s.maxLife;
+
+
+        ctx.save();
+
+
+        ctx.translate(
+            x,
+            s.y
+        );
+
+
+        ctx.scale(
+            s.direction,
+            1
+        );
+
+
+        ctx.globalAlpha=
+
+        s.life/
+        s.maxLife;
+
+
+        ctx.shadowBlur=20;
+
+        ctx.shadowColor=
+        "#4cecff";
+
+
+        ctx.strokeStyle=
+
+        s.combo===3
+
+        ?"#ffe377"
+
+        :"#73f7ff";
+
+
+        ctx.lineWidth=8;
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            0,
+            0,
+
+            35+
+            progress*30,
+
+            -1.3,
+            1.2
+
+        );
+
+        ctx.stroke();
+
+        ctx.restore();
+
+    });
+}
+
+
+/* =================================
+   ULTIMATE EFFECT
+================================= */
+
+function drawUltimate(){
+
+    if(!player.ultimate)
+    return;
+
+
+    let x=
+    player.x-cameraX;
+
+    let y=
+    player.y+25;
+
+
+    ctx.save();
+
+    ctx.translate(
+        x,y
+    );
+
+
+    ctx.shadowBlur=30;
+
+    ctx.shadowColor=
+    "#ff35df";
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        ctx.strokeStyle=
+
+        i===0
+
+        ?"#ff42dc"
+
+        :i===1
+
+        ?"#55eaff"
+
+        :"#fff";
+
+
+        ctx.lineWidth=3;
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            0,
+            0,
+
+            60+
+            i*35,
+
+            time*.04*i,
+
+            Math.PI*2
+
+        );
+
+        ctx.stroke();
+    }
+
+
+    ctx.restore();
+}
+
+
+/* =================================
+   EFFECT DRAW
+================================= */
+
+function drawEffects(){
+
+    particles.forEach(p=>{
+
+        let x=
+        p.x-cameraX;
+
+
+        ctx.globalAlpha=
+        p.life/55;
+
+        ctx.fillStyle=
+        p.color;
+
+
+        ctx.fillRect(
+
+            x,
+            p.y,
+
+            p.size,
+            p.size
+
+        );
+    });
+
+
+    neonParticles.forEach(p=>{
+
+        let x=
+        p.x-cameraX;
+
+
+        ctx.save();
+
+        ctx.globalAlpha=
+        p.life/60;
+
+        ctx.shadowBlur=12;
+
+        ctx.shadowColor=
+        p.color;
+
+        ctx.fillStyle=
+        p.color;
+
+
+        ctx.fillRect(
+
+            x,
+            p.y,
+
+            p.size,
+            p.size
+
+        );
+
+        ctx.restore();
+
+    });
+
+
+    damageTexts.forEach(d=>{
+
+        let x=
+        d.x-cameraX;
+
+
+        ctx.globalAlpha=
+        d.life/45;
+
+        ctx.fillStyle=
+        d.color;
+
+        ctx.font=
+        "bold 16px monospace";
+
+
+        ctx.fillText(
+
+            d.text,
+
+            x,
+
+            d.y
+
+        );
+    });
+
+
+    ctx.globalAlpha=1;
+}
+
+
+/* =================================
+   JOYSTICK
+================================= */
+
+const joystick=
+document.getElementById(
+    "joystick"
+);
+
+const stick=
+document.getElementById(
+    "stick"
+);
+
+let joystickActive=false;
+
+
+function moveJoystick(e){
+
+    const rect=
+    joystick.getBoundingClientRect();
+
+
+    let x=
+
+    e.clientX-
+
+    rect.left-
+
+    rect.width/2;
+
+
+    let y=
+
+    e.clientY-
+
+    rect.top-
+
+    rect.height/2;
+
+
+    const distance=
+
+    Math.sqrt(
+        x*x+y*y
+    );
+
+
+    const max=43;
+
+
+    if(distance>max){
+
+        x=
+        x/distance*max;
+
+        y=
+        y/distance*max;
+    }
+
+
+    stick.style.left=
+    (
+        37+x
+    )+"px";
+
+
+    stick.style.top=
+    (
+        37+y
+    )+"px";
+
+
+    joyX=x/max;
+}
+
+
+joystick.addEventListener(
+
+    "pointerdown",
+
+    e=>{
+
+        startAudio();
+
+        joystickActive=true;
+
+        moveJoystick(e);
+
+        joystick.setPointerCapture(
+            e.pointerId
+        );
+    }
+);
+
+
+joystick.addEventListener(
+
+    "pointermove",
+
+    e=>{
+
+        if(joystickActive)
+        moveJoystick(e);
+    }
+);
+
+
+function resetJoystick(){
+
+    joystickActive=false;
+
+    joyX=0;
+
+    stick.style.left="37px";
+
+    stick.style.top="37px";
+}
+
+
+joystick.addEventListener(
+    "pointerup",
+    resetJoystick
+);
+
+joystick.addEventListener(
+    "pointercancel",
+    resetJoystick
+);
+
+
+/* =================================
+   BUTTONS
+================================= */
+
+document
+.getElementById("jump")
+.addEventListener(
+    "pointerdown",
+    jump
+);
+
+
+document
+.getElementById("attack")
+.addEventListener(
+    "pointerdown",
+    attack
+);
+
+
+document
+.getElementById("ultimate")
+.addEventListener(
+    "pointerdown",
+    ultimate
+);
+
+
+/* =================================
+   MESSAGE
+================================= */
+
+let messageTimer;
+
+function showMessage(text){
+
+    const el=
+    document.getElementById(
+        "message"
+    );
+
+
+    el.innerHTML=text;
+
+    el.style.opacity=1;
+
+
+    clearTimeout(
+        messageTimer
+    );
+
+
+    messageTimer=
+
+    setTimeout(
+
+        ()=>{
+
+            el.style.opacity=0;
+
+        },
+
+        2200
+
+    );
+}
+
+
+/* =================================
+   UI
+================================= */
+
+function updateUI(){
+
+    document
+    .getElementById("hpFill")
+    .style.width=
+
+    (
+        player.hp/
+        player.maxHP*
+        100
+    )+"%";
+
+
+    document
+    .getElementById("manaFill")
+    .style.width=
+
+    (
+        player.mana/
+        player.maxMana*
+        100
+    )+"%";
+
+
+    document
+    .getElementById("ultimateFill")
+    .style.width=
+
+    player.ultimateEnergy+
+    "%";
+
+
+    document
+    .getElementById("hpText")
+    .textContent=
+
+    Math.ceil(
+        player.hp
+    )+
+
+    " / "+
+
+    player.maxHP;
+
+
+    document
+    .getElementById("bossFill")
+    .style.width=
+
+    (
+        boss.hp/
+        boss.maxHP*
+        100
+    )+"%";
+
+
+    const button=
+
+    document.getElementById(
+        "ultimate"
+    );
+
+
+    if(
+        player.ultimateEnergy>=100
+    ){
+
+        button.classList.add(
+            "ready"
+        );
+
+    }else{
+
+        button.classList.remove(
+            "ready"
+        );
+    }
+}
+
+
+/* =================================
+   UPDATE
+================================= */
+
+function update(){
+
+    time++;
+
+    updatePlayer();
+
+    updateMonsters();
+
+    updateBoss();
+
+    updateHealingItems();
+
+    updateEffects();
+
+    updateUI();
+}
+
+
+/* =================================
+   DRAW
+================================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    drawSky();
+
+    drawMountains();
+
+
+    drawForestLayer(
+        180,
+        "#31434a",
+        .15,
+        220
+    );
+
+
+    drawForestLayer(
+        150,
+        "#1f4b3e",
+        .35,
+        280
+    );
+
+
+    drawForestLayer(
+        190,
+        "#163b30",
+        .55,
+        330
+    );
+
+
+    drawWaterfall();
+
+    drawRiver();
+
+    drawGround();
+
+    drawHealingItems();
+
+
+    monsters.forEach(
+        drawMonster
+    );
+
+
+    drawBoss();
+
+    drawPlayer();
+
+    drawSlashes();
+
+    drawUltimate();
+
+    drawEffects();
+}
+
+
+/* =================================
+   GAME LOOP
+================================= */
+
+showMessage(
+    "ENTER THE WHISPERING WOODS"
+);
+
+function loop(){
+
+    update();
+
+    draw();
+
+    requestAnimationFrame(
+        loop
+    );
+}
+
+loop();
 
 </script>
 
